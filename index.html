@@ -2,28 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Elite Crisp - Official Store</title>
     <style>
-        /* --- BRAND THEME --- */
+        /* --- BRAND THEME & VARIABLES --- */
         :root {
             --brand-primary: #E65100; 
-            --brand-light: #FFF3E0;   
+            --brand-light: #FFF3E0;
+            --brand-dark: #EF6C00;
             --text-dark: #1a1a1a;
             --text-gray: #666;
             --white: #ffffff;
+            --bg-color: #FAFAFA;
             --shadow: 0 4px 15px rgba(230, 81, 0, 0.15); 
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        /* --- GLOBAL RESET & TYPOGRAPHY --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
         
         body { 
-            background-color: #FAFAFA; 
+            background-color: var(--bg-color); 
             color: var(--text-dark);
             padding-bottom: 140px; 
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
 
-        /* --- 1. HEADER --- */
+        /* --- 1. HEADER SECTION --- */
         header {
             background: var(--white);
             height: 70px;
@@ -34,12 +46,13 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all var(--transition-speed);
         }
 
         .logo-area { display: flex; align-items: center; gap: 10px; }
         
         .header-logo-img {
-            height: 70px;
+            height: 60px;
             object-fit: contain;
         }
 
@@ -58,6 +71,7 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease-out;
         }
 
         .slider-wrapper {
@@ -71,6 +85,7 @@
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
+            scroll-behavior: smooth;
         }
         .slides::-webkit-scrollbar { display: none; }
 
@@ -80,176 +95,543 @@
             height: 350px;
             object-fit: contain;
             scroll-snap-align: center;
-            transition: transform 0.3s;
+            transition: transform var(--transition-speed);
         }
 
         .dots { display: flex; justify-content: center; gap: 8px; padding-bottom: 15px; }
-        .dot { width: 8px; height: 8px; background: #ddd; border-radius: 50%; }
-        .dot.active { background: var(--brand-primary); width: 20px; border-radius: 10px; }
+        .dot { width: 8px; height: 8px; background: #ddd; border-radius: 50%; transition: all 0.3s; }
+        .dot.active { background: var(--brand-primary); width: 24px; border-radius: 10px; }
 
-        .details { padding: 20px; }
+        .details { padding: 25px; }
 
         .tag {
             background: var(--brand-light);
             color: var(--brand-primary);
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 50px;
             font-size: 0.8rem;
             font-weight: 700;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
         }
 
         .title {
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             line-height: 1.3;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            color: var(--text-dark);
         }
 
-        .price-box { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .current-price { font-size: 1.8rem; font-weight: 800; color: var(--text-dark); }
-        .old-price { text-decoration: line-through; color: var(--text-gray); font-size: 1rem; }
-        .discount-badge { background: #ff4757; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .price-box { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .current-price { font-size: 2rem; font-weight: 800; color: var(--text-dark); }
+        .old-price { text-decoration: line-through; color: var(--text-gray); font-size: 1.1rem; }
+        .discount-badge { 
+            background: #ff4757; 
+            color: white; 
+            padding: 4px 10px; 
+            border-radius: 6px; 
+            font-size: 0.85rem; 
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(255, 71, 87, 0.3);
+        }
 
+        /* Feature Grid */
         .features {
             display: flex;
             justify-content: space-between;
             margin: 25px 0;
             background: #fff;
             padding: 15px;
-            border-radius: 15px;
-            border: 1px solid #eee;
+            border-radius: 16px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
         .feat-item { text-align: center; width: 25%; }
         .feat-icon { 
-            font-size: 1.5rem; 
+            font-size: 1.6rem; 
             background: var(--brand-light); 
-            width: 50px; height: 50px; 
+            width: 55px; height: 55px; 
             border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
-            margin: 0 auto 8px auto;
+            margin: 0 auto 10px auto;
             color: var(--brand-primary);
+            transition: transform 0.2s;
         }
-        .feat-text { font-size: 0.7rem; font-weight: 600; color: #555; }
+        .feat-item:active .feat-icon { transform: scale(0.9); }
+        .feat-text { font-size: 0.75rem; font-weight: 600; color: #555; }
 
         .desc-box {
             background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--brand-primary);
+            padding: 20px;
+            border-radius: 14px;
+            border-left: 5px solid var(--brand-primary);
         }
-        .desc-box h3 { font-size: 1rem; margin-bottom: 10px; }
-        .desc-box li { font-size: 0.9rem; margin-bottom: 8px; color: #444; margin-left: 15px;}
+        .desc-box h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--text-dark); }
+        .desc-box ul { padding-left: 20px; }
+        .desc-box li { font-size: 0.95rem; margin-bottom: 8px; color: #444; }
 
-        /* --- 3. CONTACT BUTTON (TRIGGER) --- */
+        /* --- 3. CONTACT BUTTON --- */
         .contact-trigger-area {
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
         }
         .contact-btn {
             background: white;
-            border: 1px solid #ddd;
+            border: 1px solid #e0e0e0;
             color: var(--text-dark);
-            padding: 12px 25px;
+            padding: 14px 30px;
             border-radius: 30px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
-        .contact-btn:active { transform: scale(0.95); }
+        .contact-btn:active { transform: scale(0.95); background: #f5f5f5; }
 
-        /* --- 4. POPUP MODAL STYLES (NEW) --- */
-        .modal-overlay {
-            display: none; /* Hidden by default */
+        /* --- 4. CHECKOUT MODAL (Deeply Optimized) --- */
+        .checkout-overlay {
+            display: none;
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Dark dim background */
-            z-index: 3000; /* On top of everything */
-            align-items: center;
+            width: 100%; 
+            height: 100%;
+            height: 100dvh; 
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 3000;
+            align-items: flex-end; 
             justify-content: center;
-            backdrop-filter: blur(3px); /* Blur effect */
+            backdrop-filter: blur(6px);
+            transition: opacity 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .checkout-overlay { align-items: center; }
         }
 
-        .modal-box {
+        .checkout-container {
             background: white;
-            width: 90%;
-            max-width: 350px;
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 520px;
+            height: 90vh; 
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
             position: relative;
-            animation: popIn 0.3s ease;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
         }
 
-        .modal-title {
-            font-size: 1.2rem;
+        @media (min-width: 768px) {
+            .checkout-container {
+                height: auto;
+                max-height: 85vh;
+                border-radius: 24px;
+                animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .checkout-header {
+            background: var(--brand-primary);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 24px 24px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .checkout-title {
+            font-size: 1.3rem;
             font-weight: 800;
-            color: var(--brand-primary);
-            margin-bottom: 20px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .modal-row {
+        .checkout-close {
+            background: rgba(255,255,255,0.25);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            background: #f9f9f9;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .checkout-close:hover { background: rgba(255,255,255,0.4); }
+
+        .checkout-body {
+            padding: 25px;
+            padding-bottom: 100px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            flex-grow: 1;
+            background: #fcfcfc;
+        }
+
+        /* Form Styling */
+        .checkout-step { display: none; animation: fadeIn 0.3s; }
+        .checkout-step.active { display: block; }
+
+        .step-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .step-title .step-number {
+            background: var(--brand-primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #fff;
+            color: #333;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(230, 81, 0, 0.1);
+        }
+        .form-input::placeholder { color: #aaa; }
+        .form-input:invalid:not(:placeholder-shown) { border-color: #ff4757; }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .address-grid .form-group:last-child { grid-column: span 2; }
+
+        /* Payment Options Styling */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-option {
+            border: 2px solid #eee;
+            border-radius: 16px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .payment-option:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .payment-option.selected {
+            border-color: var(--brand-primary);
+            background-color: #fff8e1;
+        }
+        .payment-radio { width: 22px; height: 22px; accent-color: var(--brand-primary); }
+        
+        .payment-icon {
+            font-size: 1.6rem;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .payment-details { flex: 1; }
+        .payment-title { font-weight: 700; font-size: 1rem; color: var(--text-dark); }
+        .payment-desc { font-size: 0.8rem; color: #666; margin-top: 3px; }
+        .payment-badges { display: flex; gap: 5px; margin-top: 5px; }
+        .p-badge { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; color: #555; font-weight: 600; }
+
+        /* --- UPI INTENT STYLING (THE NEW PART) --- */
+        .upi-details, .cod-details {
+            margin-top: 25px;
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        .upi-details.active, .cod-details.active { display: block; }
+
+        .upi-intent-box {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+        }
+
+        .secure-shield {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+            color: #28a745;
+        }
+
+        .intent-msg {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .intent-sub { font-size: 0.9rem; color: #777; margin-bottom: 25px; }
+
+        .btn-pay-intent {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(30, 136, 229, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+        .btn-pay-intent:active { transform: scale(0.98); }
+
+        .supported-apps {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Payment Confirmation Screen (Hidden initially) */
+        .payment-confirm-screen {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+            background: #fff8e1;
+            border-radius: 16px;
+            border: 1px dashed var(--brand-primary);
+        }
+        .payment-confirm-screen.active { display: block; animation: popIn 0.3s; }
+
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid #ddd;
+            border-top: 4px solid var(--brand-primary);
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .confirm-title { font-weight: 800; color: var(--text-dark); margin-bottom: 10px; font-size: 1.1rem; }
+        .confirm-desc { font-size: 0.9rem; color: #555; margin-bottom: 20px; line-height: 1.5; }
+
+        .confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .btn-paid-yes {
+            background: #28a745;
+            color: white;
+            border: none;
             padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            text-align: left;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-paid-no {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: #fdfdfd;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
             border: 1px solid #eee;
         }
-
-        .m-icon {
-            font-size: 1.5rem;
-            margin-right: 15px;
-            background: var(--brand-light);
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+        .summary-title { font-weight: 800; font-size: 1rem; margin-bottom: 12px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed #e0e0e0;
+            color: #555;
+        }
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--brand-primary);
+            padding-top: 15px;
         }
 
-        .m-text label { display: block; font-size: 0.7rem; color: #888; font-weight: 600; }
-        .m-text a { 
-            text-decoration: none; 
-            color: var(--text-dark); 
-            font-weight: 700; 
+        /* Footer Buttons */
+        .checkout-footer {
+            background: white;
+            padding: 15px 25px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            position: absolute; /* Stick to bottom of container */
+            bottom: 0; left: 0; right: 0;
+            border-radius: 0 0 24px 24px;
+            z-index: 20;
+        }
+
+        .btn-back {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.2s;
+        }
+        .btn-next {
+            background: var(--brand-primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 81, 0, 0.3);
+            flex: 1.5;
+            transition: transform 0.2s;
+        }
+        .btn-confirm-cod {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            width: 100%;
             font-size: 1rem;
         }
 
-        .close-btn {
-            margin-top: 15px;
-            background: #333;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
+        /* Success Modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 4000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .success-content {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 35px 25px;
+            text-align: center;
+            animation: popIn 0.3s ease;
+            position: relative;
+        }
+        .success-icon { font-size: 4rem; margin-bottom: 15px; display: block; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        
+        .success-title { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+        .success-message { font-size: 0.95rem; color: #666; margin-bottom: 25px; line-height: 1.5; }
+        .order-id {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 25px;
+            border: 1px dashed #a5d6a7;
+            font-size: 1.1rem;
         }
 
         @keyframes popIn {
             from { transform: scale(0.8); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-
-        /* --- 5. ACTION BAR --- */
+        /* --- 5. BOTTOM ACTION BAR --- */
         .action-container {
             position: fixed;
             bottom: 0; left: 0; right: 0;
             background: var(--white);
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
             padding: 15px 20px;
             z-index: 2000;
         }
@@ -258,30 +640,116 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
-            background: #f1f1f1;
-            padding: 10px 15px;
-            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            padding: 8px 20px;
+            border-radius: 16px;
         }
-        .qty-controls { display: flex; align-items: center; gap: 15px; }
+        .qty-label { font-size: 0.95rem; font-weight: 700; color: #555; }
+        .qty-controls { display: flex; align-items: center; gap: 18px; }
         .qty-btn {
-            width: 30px; height: 30px;
-            background: white; border: 1px solid #ccc;
-            border-radius: 50%; font-size: 1.2rem;
+            width: 34px; height: 34px;
+            background: white; border: 1px solid #e0e0e0;
+            border-radius: 50%; font-size: 1.3rem;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: background 0.2s;
+            user-select: none;
         }
-        .qty-value { font-size: 1.1rem; font-weight: 700; width: 20px; text-align: center; }
+        .qty-btn:active { background: #eee; }
+        .qty-value { font-size: 1.2rem; font-weight: 800; width: 25px; text-align: center; }
 
         .action-bar { display: flex; align-items: center; justify-content: space-between; }
-        .total-val { font-size: 1.4rem; font-weight: 800; color: var(--text-dark); }
+        .total-price { display: flex; flex-direction: column; }
+        .total-label { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; }
+        .total-val { font-size: 1.6rem; font-weight: 900; color: var(--text-dark); }
         .btn-main {
             background-color: var(--brand-primary);
             color: white; border: none;
-            padding: 12px 30px; border-radius: 50px; 
-            font-size: 1rem; font-weight: 700;
-            box-shadow: 0 4px 10px rgba(230, 81, 0, 0.4);
+            padding: 15px 40px; border-radius: 50px; 
+            font-size: 1.1rem; font-weight: 700;
+            box-shadow: 0 6px 20px rgba(230, 81, 0, 0.4);
             cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-main:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(230, 81, 0, 0.3); }
+
+        /* Modal Contact */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3500;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 360px;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            position: relative;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--brand-primary);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .modal-row {
+            display: flex;
+            align-items: center;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            text-align: left;
+            border: 1px solid #eee;
+            transition: transform 0.2s;
+        }
+        .modal-row:active { transform: scale(0.98); }
+
+        .m-icon {
+            font-size: 1.4rem;
+            margin-right: 18px;
+            background: var(--brand-light);
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .m-text label { display: block; font-size: 0.75rem; color: #888; font-weight: 600; margin-bottom: 3px; }
+        .m-text a { 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            font-weight: 700; 
+            font-size: 1.05rem;
+        }
+
+        .close-btn {
+            margin-top: 15px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -337,12 +805,12 @@
     </div>
 
     <div class="contact-trigger-area">
-        <button class="contact-btn" onclick="openModal()">
+        <button class="contact-btn" onclick="openContactModal()">
             📞  Contact Details
         </button>
     </div>
 
-    <div id="contactModal" class="modal-overlay" onclick="closeModal()">
+    <div id="contactModal" class="modal-overlay" onclick="closeContactModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <h3 class="modal-title">Get in Touch</h3>
             
@@ -362,7 +830,186 @@
                 </div>
             </div>
 
-            <button class="close-btn" onclick="closeModal()">Close Window</button>
+            <button class="close-btn" onclick="closeContactModal()">Close Window</button>
+        </div>
+    </div>
+
+    <div id="checkoutModal" class="checkout-overlay">
+        <div class="checkout-container" onclick="event.stopPropagation()">
+            <div class="checkout-header">
+                <h2 class="checkout-title">Secure Checkout</h2>
+                <button class="checkout-close" onclick="closeCheckoutModal()">×</button>
+            </div>
+            
+            <form id="checkoutForm" onsubmit="return false;" class="checkout-body">
+                
+                <div class="checkout-step active" id="step1">
+                    <div class="step-title">
+                        <span class="step-number">1</span>
+                        Delivery Address
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-input" id="fullName" name="name" autocomplete="name" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number *</label>
+                        <input type="tel" inputmode="numeric" class="form-input" id="mobileNumber" name="tel" autocomplete="tel" required placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address (Optional)</label>
+                        <input type="email" class="form-input" id="email" name="email" autocomplete="email" placeholder="optional@gmail.com">
+                    </div>
+                    
+                    <div class="address-grid">
+                        <div class="form-group">
+                            <label class="form-label">Pincode *</label>
+                            <input type="tel" inputmode="numeric" class="form-input" id="pincode" name="postal-code" autocomplete="postal-code" required placeholder="6-digit pincode" pattern="[0-9]{6}" maxlength="6">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">City *</label>
+                            <input type="text" class="form-input" id="city" name="address-level2" autocomplete="address-level2" required placeholder="Your city">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">State *</label>
+                            <input type="text" class="form-input" id="state" name="address-level1" autocomplete="address-level1" required placeholder="Your state">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Full Address (House/Area/Street) *</label>
+                        <textarea class="form-input" id="fullAddress" name="street-address" autocomplete="street-address" required rows="3" placeholder="House no., Building, Street, Area"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Landmark (Optional)</label>
+                        <input type="text" class="form-input" id="landmark" placeholder="Nearby landmark">
+                    </div>
+                    
+                </div>
+                
+                <div class="checkout-step" id="step2">
+                    <div class="step-title">
+                        <span class="step-number">2</span>
+                        Payment Method
+                    </div>
+                    
+                    <div class="payment-options">
+                        <div class="payment-option" onclick="selectPayment('upi')" id="upiOption">
+                            <input type="radio" class="payment-radio" name="payment" id="upiRadio" value="upi">
+                            <div class="payment-icon">⚡</div>
+                            <div class="payment-details">
+                                <div class="payment-title">UPI Apps</div>
+                                <div class="payment-desc">GooglePay, PhonePe, Paytm</div>
+                                <div class="payment-badges">
+                                    <span class="p-badge">FASTEST</span>
+                                    <span class="p-badge">SECURE</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-option" onclick="selectPayment('cod')" id="codOption">
+                            <input type="radio" class="payment-radio" name="payment" id="codRadio" value="cod">
+                            <div class="payment-icon">💵</div>
+                            <div class="payment-details">
+                                <div class="payment-title">Cash on Delivery</div>
+                                <div class="payment-desc">Pay cash upon receiving</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="upi-details" id="upiDetails">
+                        
+                        <div id="upiInitialState">
+                            <div class="upi-intent-box">
+                                <span class="secure-shield">🛡️</span>
+                                <div class="intent-msg">Pay <span id="intentAmountDisplay">₹150</span> securely</div>
+                                <div class="intent-sub">Directly via your favorite UPI App</div>
+                                
+                                <button type="button" class="btn-pay-intent" onclick="payWithUPIApp()">
+                                    <span>PAY NOW</span>
+                                    <span>➔</span>
+                                </button>
+                                
+                                <div class="supported-apps">
+                                    <span>GPay</span> • <span>PhonePe</span> • <span>Paytm</span> • <span>BHIM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="upiConfirmState" class="payment-confirm-screen">
+                            <div class="spinner"></div>
+                            <div class="confirm-title">Waiting for Payment...</div>
+                            <div class="confirm-desc">
+                                Please complete the payment in your UPI app.<br>
+                                <strong>Once paid, click "Yes" below.</strong>
+                            </div>
+                            
+                            <div class="confirm-actions">
+                                <button type="button" class="btn-paid-no" onclick="resetUPIFlow()">❌ Cancel</button>
+                                <button type="button" class="btn-paid-yes" onclick="completeUPIPayment()">✅ Yes, I Paid</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="cod-details" id="codDetails">
+                        <div class="payment-instructions" style="border-left-color: #4CAF50;">
+                            <h4>Cash on Delivery Instructions:</h4>
+                            <ol>
+                                <li>Your order will be confirmed immediately</li>
+                                <li>Pay cash when the delivery agent arrives</li>
+                                <li>Check your products before making payment</li>
+                            </ol>
+                        </div>
+                        
+                        <button type="button" class="btn-confirm-cod" onclick="completeCODPayment()" id="codConfirmBtn">
+                            Confirm Order
+                        </button>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div class="summary-title">Bill Details</div>
+                        <div class="summary-row">
+                            <span>Item Total</span>
+                            <span id="summaryProductPrice">₹150</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Fee</span>
+                            <span style="color:#28a745">FREE</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Total Payable</span>
+                            <span id="summaryTotal">₹150</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+
+            <div class="checkout-footer" id="footerStep1">
+                <button type="button" class="btn-back" onclick="closeCheckoutModal()">Close</button>
+                <button type="button" class="btn-next" onclick="goToStep(2)">Continue</button>
+            </div>
+
+            <div class="checkout-footer" id="footerStep2" style="display:none;">
+                <button type="button" class="btn-back" onclick="goToStep(1)">Back</button>
+                <div style="flex: 1.5;"></div> </div>
+        </div>
+    </div>
+    
+    <div id="successModal" class="success-modal">
+        <div class="success-content">
+            <span class="success-icon">🎉</span>
+            <h2 class="success-title">Order Placed!</h2>
+            <p class="success-message" id="successMessage">Your order has been confirmed successfully. We have sent the details to your WhatsApp.</p>
+            <div class="order-id">Order ID: <span id="orderId">EC123456</span></div>
+            <button class="btn-confirm-cod" onclick="closeSuccessModal()">Shop More</button>
         </div>
     </div>
 
@@ -378,53 +1025,294 @@
 
         <div class="action-bar">
             <div class="total-price">
-                <span class="total-label">Total Price</span>
+                <span class="total-label">Total</span>
                 <span class="total-val" id="totalPrice">₹150</span>
             </div>
-            <button class="btn-main" onclick="openWhatsApp()">
+            <button class="btn-main" onclick="openCheckoutModal()">
                 ORDER NOW ➔
             </button>
         </div>
     </div>
 
     <script>
-        // Slider
-        const slider = document.getElementById('slider');
-        const dot1 = document.getElementById('dot1');
-        const dot2 = document.getElementById('dot2');
-        slider.addEventListener('scroll', () => {
-            const scrollPos = slider.scrollLeft;
-            const width = slider.offsetWidth;
-            if (scrollPos < width * 0.5) { dot1.classList.add('active'); dot2.classList.remove('active'); } 
-            else { dot1.classList.remove('active'); dot2.classList.add('active'); }
-        });
-
-        // Modal Logic (New)
-        function openModal() {
-            document.getElementById('contactModal').style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('contactModal').style.display = 'none';
-        }
-
-        // Order Logic
+        // --- CORE VARIABLES ---
         let quantity = 1;
         const pricePerUnit = 150;
         const productTitle = "Thekua - Coconut & Almond Magic";
+        
+        // UPI Configuration (YOUR DATA)
+        const upiConfig = {
+            pa: 'sadiqueamin184@okaxis', // Payee Address (VPA)
+            pn: 'Sadique Amin',          // Payee Name
+            mc: '',                      // Merchant Code (Optional)
+            tid: '',                     // Transaction ID (Optional)
+            tr: '',                      // Transaction Ref ID
+            tn: 'Elite Crisp Order',     // Transaction Note
+            cu: 'INR'                    // Currency
+        };
 
+        let currentStep = 1;
+        let selectedPayment = null;
+        let orderData = {};
+
+        // --- SLIDER LOGIC ---
+        const slider = document.getElementById('slider');
+        const dot1 = document.getElementById('dot1');
+        const dot2 = document.getElementById('dot2');
+        
+        if(slider && dot1 && dot2) {
+            slider.addEventListener('scroll', () => {
+                const scrollPos = slider.scrollLeft;
+                const width = slider.offsetWidth;
+                if (scrollPos < width * 0.5) { 
+                    dot1.classList.add('active'); 
+                    dot2.classList.remove('active'); 
+                } else { 
+                    dot1.classList.remove('active'); 
+                    dot2.classList.add('active'); 
+                }
+            });
+        }
+
+        // --- MODAL CONTROLS ---
+        function openContactModal() {
+            document.getElementById('contactModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeContactModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function openCheckoutModal() {
+            document.getElementById('checkoutModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            resetCheckout();
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- QUANTITY & CALCULATION ---
         function changeQty(change) {
             quantity += change;
             if (quantity < 1) quantity = 1; 
+            if (quantity > 10) quantity = 10;
+            
+            const total = quantity * pricePerUnit;
+            const fmtTotal = '₹' + total;
+            
+            // Update Main Page
             document.getElementById('qtyDisplay').innerText = quantity;
-            document.getElementById('totalPrice').innerText = '₹' + (quantity * pricePerUnit);
+            document.getElementById('totalPrice').innerText = fmtTotal;
+            
+            // Update Modal
+            document.getElementById('summaryProductPrice').innerText = fmtTotal;
+            document.getElementById('summaryTotal').innerText = fmtTotal;
+            document.getElementById('intentAmountDisplay').innerText = fmtTotal;
         }
 
-        function openWhatsApp() {
-            const total = quantity * pricePerUnit;
-            const message = `Hello, I would like to order:\n\n*Product:* ${productTitle}\n*Quantity:* ${quantity} packets\n*Total Price:* ₹${total}\n\nPlease confirm my order.`;
-            const encodedMsg = encodeURIComponent(message);
-            window.location.href = `https://wa.me/919529123856?text=${encodedMsg}`;
+        // --- CHECKOUT NAVIGATION ---
+        function resetCheckout() {
+            currentStep = 1;
+            selectedPayment = null;
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            
+            // Reset Payment UI
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+            if(document.getElementById('upiRadio')) document.getElementById('upiRadio').checked = false;
+            if(document.getElementById('codRadio')) document.getElementById('codRadio').checked = false;
+            
+            document.getElementById('upiDetails').classList.remove('active');
+            document.getElementById('codDetails').classList.remove('active');
+            
+            // Reset Footer
+            document.getElementById('footerStep1').style.display = 'flex';
+            document.getElementById('footerStep2').style.display = 'none';
+            
+            // Reset UPI Flow State
+            resetUPIFlow();
         }
+
+        function goToStep(step) {
+            const form = document.getElementById('checkoutForm');
+            
+            if (step === 2) {
+                // Validation
+                if (!form.reportValidity()) return;
+                
+                // Save Data
+                orderData.address = {
+                    name: document.getElementById('fullName').value.trim(),
+                    mobile: document.getElementById('mobileNumber').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    pincode: document.getElementById('pincode').value.trim(),
+                    city: document.getElementById('city').value.trim(),
+                    state: document.getElementById('state').value.trim(),
+                    landmark: document.getElementById('landmark').value.trim(),
+                    fullAddress: document.getElementById('fullAddress').value.trim()
+                };
+                
+                // UI Switch
+                document.getElementById('footerStep1').style.display = 'none';
+                document.getElementById('footerStep2').style.display = 'flex';
+            } else {
+                document.getElementById('footerStep1').style.display = 'flex';
+                document.getElementById('footerStep2').style.display = 'none';
+            }
+            
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
+        }
+
+        // --- PAYMENT SELECTION ---
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            // Visual Updates
+            document.getElementById('upiOption').classList.remove('selected');
+            document.getElementById('codOption').classList.remove('selected');
+            document.getElementById('upiDetails').classList.remove('active');
+            document.getElementById('codDetails').classList.remove('active');
+            
+            if (method === 'upi') {
+                document.getElementById('upiOption').classList.add('selected');
+                document.getElementById('upiRadio').checked = true;
+                document.getElementById('upiDetails').classList.add('active');
+                resetUPIFlow(); // Ensure fresh state
+            } else if (method === 'cod') {
+                document.getElementById('codOption').classList.add('selected');
+                document.getElementById('codRadio').checked = true;
+                document.getElementById('codDetails').classList.add('active');
+            }
+            
+            // Auto scroll
+            const checkoutBody = document.querySelector('.checkout-body');
+            setTimeout(() => {
+                checkoutBody.scrollTo({ top: checkoutBody.scrollHeight, behavior: 'smooth' });
+            }, 100);
+        }
+
+        // --- UPI INTENT LOGIC (THE MAGIC) ---
+        function payWithUPIApp() {
+            const totalAmount = quantity * pricePerUnit;
+            // Create Transaction Note with Random ID to prevent caching
+            const trxnId = 'EC' + Date.now();
+            
+            // Construct UPI Deep Link
+            // Format: upi://pay?pa=...&pn=...&am=...&cu=INR&tn=...
+            let upiLink = `upi://pay?pa=${upiConfig.pa}&pn=${encodeURIComponent(upiConfig.pn)}&am=${totalAmount}&cu=${upiConfig.cu}&tn=${trxnId}`;
+            
+            // Redirect User to App
+            window.location.href = upiLink;
+            
+            // Change UI to Confirmation State
+            document.getElementById('upiInitialState').style.display = 'none';
+            document.getElementById('upiConfirmState').classList.add('active');
+        }
+
+        function resetUPIFlow() {
+            document.getElementById('upiInitialState').style.display = 'block';
+            document.getElementById('upiConfirmState').classList.remove('active');
+        }
+
+        // --- COMPLETION HANDLERS ---
+        function completeUPIPayment() {
+            finalizeOrder('UPI', 'Paid via UPI App (User Confirmed)');
+        }
+
+        function completeCODPayment() {
+            finalizeOrder('COD', 'Cash on Delivery');
+        }
+
+        function finalizeOrder(method, status) {
+            // Generate Order ID
+            const orderId = 'EC' + Date.now().toString().slice(-6);
+            document.getElementById('orderId').innerText = orderId;
+            
+            orderData.product = {
+                title: productTitle,
+                quantity: quantity,
+                unitPrice: pricePerUnit,
+                total: quantity * pricePerUnit
+            };
+            
+            orderData.payment = {
+                method: method,
+                status: status
+            };
+            
+            orderData.orderId = orderId;
+            orderData.date = new Date().toLocaleString();
+            
+            // Send to WhatsApp
+            sendOrderToWhatsApp(method);
+            
+            // Show Success
+            closeCheckoutModal();
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        // --- WHATSAPP INTEGRATION ---
+        function sendOrderToWhatsApp(paymentType) {
+            const total = quantity * pricePerUnit;
+            const addr = orderData.address;
+            
+            // Clean Address Formatting
+            const addressText = `👤 *${addr.name}*\n📱 ${addr.mobile}${addr.email ? '\n📧 ' + addr.email : ''}\n📍 ${addr.fullAddress}\n${addr.landmark ? 'Near ' + addr.landmark + '\n' : ''}🏙️ ${addr.city}, ${addr.state} - ${addr.pincode}`;
+            
+            let message = `*📦 NEW ORDER DETECTED - Elite Crisp*\n`;
+            message += `━━━━━━━━━━━━━━━━━━━━\n`;
+            message += `🆔 *Order ID:* ${orderData.orderId}\n`;
+            message += `📅 *Date:* ${orderData.date}\n`;
+            message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            message += `🛒 *ORDER DETAILS:*\n`;
+            message += `🍪 *${productTitle}*\n`;
+            message += `🔢 Quantity: ${quantity} x ₹${pricePerUnit}\n`;
+            message += `💰 *TOTAL AMOUNT: ₹${total}*\n\n`;
+            
+            message += `💳 *PAYMENT STATUS:*\n`;
+            if (paymentType === 'UPI') {
+                message += `✅ *PAID VIA UPI APP*\n`;
+                message += `(Customer confirmed payment via Intent)\n`;
+                message += `⚠️ *Please check bank for ₹${total}*\n`;
+            } else {
+                message += `🚚 *CASH ON DELIVERY*\n`;
+                message += `💵 Collect ₹${total} upon delivery\n`;
+            }
+            message += `\n━━━━━━━━━━━━━━━━━━━━\n`;
+            
+            message += `📍 *DELIVERY ADDRESS:*\n${addressText}\n\n`;
+            message += `✅ *Auto-Generated Order*`;
+            
+            const encodedMsg = encodeURIComponent(message);
+            // Replace with your phone number
+            const whatsappUrl = `https://wa.me/918252838732?text=${encodedMsg}`;
+            
+            // Delay slightly to allow UI to update
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 500);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // Reset logic
+            quantity = 1;
+            changeQty(0);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', function() {
+            changeQty(0);
+        });
     </script>
 
 </body>
