@@ -1044,11 +1044,11 @@
         const upiConfig = {
             pa: 'sadiqueamin184@okaxis', // Payee Address (VPA)
             pn: 'Sadique Amin',          // Payee Name
-            mc: '',                      // Merchant Code (Optional)
-            tid: '',                     // Transaction ID (Optional)
-            tr: '',                      // Transaction Ref ID
-            tn: 'Elite Crisp Order',     // Transaction Note
-            cu: 'INR'                    // Currency
+            mc: '',                      
+            tid: '',                     
+            tr: '',                      
+            tn: 'Elite Crisp Order',     
+            cu: 'INR'                    
         };
 
         let currentStep = 1;
@@ -1116,6 +1116,9 @@
 
         // --- CHECKOUT NAVIGATION ---
         function resetCheckout() {
+            // IF we are restoring a session, do not reset!
+            if(localStorage.getItem('ec_payment_pending')) return;
+
             currentStep = 1;
             selectedPayment = null;
             document.getElementById('step1').classList.add('active');
@@ -1134,7 +1137,7 @@
             document.getElementById('footerStep2').style.display = 'none';
             
             // Reset UPI Flow State
-            resetUPIFlow();
+            resetUPIFlowState();
         }
 
         function goToStep(step) {
@@ -1184,7 +1187,7 @@
                 document.getElementById('upiOption').classList.add('selected');
                 document.getElementById('upiRadio').checked = true;
                 document.getElementById('upiDetails').classList.add('active');
-                resetUPIFlow(); // Ensure fresh state
+                resetUPIFlowState(); 
             } else if (method === 'cod') {
                 document.getElementById('codOption').classList.add('selected');
                 document.getElementById('codRadio').checked = true;
@@ -1198,31 +1201,96 @@
             }, 100);
         }
 
-        // --- UPI INTENT LOGIC (THE MAGIC) ---
+        // --- UPI INTENT LOGIC & STATE MANAGEMENT ---
+        
         function payWithUPIApp() {
             const totalAmount = quantity * pricePerUnit;
-            // Create Transaction Note with Random ID to prevent caching
             const trxnId = 'EC' + Date.now();
             
-            // Construct UPI Deep Link
-            // Format: upi://pay?pa=...&pn=...&am=...&cu=INR&tn=...
+            // 1. Save State BEFORE redirecting
+            // We save all form details + quantity so we can restore them after reload
+            const tempState = {
+                qty: quantity,
+                address: orderData.address, // Address collected in Step 1
+                paymentStarted: true
+            };
+            localStorage.setItem('ec_payment_pending', JSON.stringify(tempState));
+
+            // 2. Redirect
             let upiLink = `upi://pay?pa=${upiConfig.pa}&pn=${encodeURIComponent(upiConfig.pn)}&am=${totalAmount}&cu=${upiConfig.cu}&tn=${trxnId}`;
-            
-            // Redirect User to App
             window.location.href = upiLink;
             
-            // Change UI to Confirmation State
+            // 3. UI Update (for desktop testing or if page doesn't kill)
+            showUPIConfirmation();
+        }
+
+        function showUPIConfirmation() {
             document.getElementById('upiInitialState').style.display = 'none';
             document.getElementById('upiConfirmState').classList.add('active');
         }
 
-        function resetUPIFlow() {
+        function resetUPIFlowState() {
             document.getElementById('upiInitialState').style.display = 'block';
             document.getElementById('upiConfirmState').classList.remove('active');
         }
 
+        function resetUPIFlow() {
+            // Called by "Cancel" button
+            localStorage.removeItem('ec_payment_pending'); // Clear memory
+            resetUPIFlowState();
+        }
+
+        // --- RESTORE SESSION LOGIC (The Fix for Page Reload) ---
+        function restoreSession() {
+            const savedState = localStorage.getItem('ec_payment_pending');
+            if (!savedState) return; // Nothing to restore
+
+            try {
+                const data = JSON.parse(savedState);
+                if (data.paymentStarted) {
+                    // Restore Quantity
+                    quantity = data.qty;
+                    changeQty(0); // Update UI prices
+
+                    // Restore Address Form
+                    if (data.address) {
+                        document.getElementById('fullName').value = data.address.name || '';
+                        document.getElementById('mobileNumber').value = data.address.mobile || '';
+                        document.getElementById('email').value = data.address.email || '';
+                        document.getElementById('pincode').value = data.address.pincode || '';
+                        document.getElementById('city').value = data.address.city || '';
+                        document.getElementById('state').value = data.address.state || '';
+                        document.getElementById('fullAddress').value = data.address.fullAddress || '';
+                        document.getElementById('landmark').value = data.address.landmark || '';
+                        
+                        // Set global order data
+                        orderData.address = data.address;
+                    }
+
+                    // Open Modal directly to Step 2
+                    document.getElementById('checkoutModal').style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Simulate navigation to Step 2
+                    document.getElementById('step1').classList.remove('active');
+                    document.getElementById('step2').classList.add('active');
+                    document.getElementById('footerStep1').style.display = 'none';
+                    document.getElementById('footerStep2').style.display = 'flex';
+                    
+                    // Select UPI & Show Confirmation
+                    selectPayment('upi');
+                    showUPIConfirmation();
+                }
+            } catch (e) {
+                console.error("Error restoring session", e);
+                localStorage.removeItem('ec_payment_pending');
+            }
+        }
+
         // --- COMPLETION HANDLERS ---
         function completeUPIPayment() {
+            // User clicked "Yes, I Paid"
+            localStorage.removeItem('ec_payment_pending'); // Clear memory
             finalizeOrder('UPI', 'Paid via UPI App (User Confirmed)');
         }
 
@@ -1312,6 +1380,7 @@
         // Init
         document.addEventListener('DOMContentLoaded', function() {
             changeQty(0);
+            restoreSession(); // Check if user returned from UPI app
         });
     </script>
 
